@@ -1,0 +1,28 @@
+{
+  "name": "aws-lambda",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.js",
+  "scripts": {
+    "dev": "sls offline -s dev --noTimeout"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.54.0",
+    "aws-lambda": "^1.0.7",
+    "jsonwebtoken": "^8.5.1",
+    "jwks-rsa": "^2.0.5",
+    "zod": "^3.13.4"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.93",
+    "@types/jsonwebtoken": "^8.5.8",
+    "@types/serverless": "^3.0.1",
+    "serverless": "^3.7.4",
+    "serverless-iam-roles-per-function": "^3.2.0",
+    "serverless-offline": "^8.5.0",
+    "serverless-plugin-typescript": "^2.1.1",
+    "typescript": "^4.6.2"
+  }
+}

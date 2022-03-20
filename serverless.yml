@@ -1,0 +1,52 @@
+service: upload-to-s3
+frameworkVersion: '3'
+
+plugins:
+  - serverless-offline
+  - serverless-plugin-typescript
+  - serverless-iam-roles-per-function
+
+custom:
+  fileUploadBucketName: ${self:service}-bucket-${self:provider.stage}
+  serverless-offline:
+    httpPort: 1337
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  profile: serverlessUser
+  stage: dev
+  region: ap-south-1
+
+functions:
+  hello:
+    handler: src/lambda/hello.handler
+    events:
+      - http:
+          path: /hello
+          method: GET
+          cors: true
+
+  imageUpload:
+    handler: src/lambda/imageUpload.handler
+    events:
+      - http:
+          path: /imageUpload
+          method: POST
+          cors: true
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - s3:PutObjectAcl
+          - s3:PutObject
+        Resource: arn:aws:s3:::${self:custom.fileUploadBucketName}/*
+    environment:
+      FILE_UPLOAD_BUCKET_NAME: ${self:custom.fileUploadBucketName}
+
+resources:
+  Resources:
+    FileBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.fileUploadBucketName}
+        AccessControl: PublicRead
